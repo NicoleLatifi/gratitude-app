@@ -2,14 +2,12 @@ import axios from "axios"
 
 const API_URL = "http://localhost:3000/gratitudeEntries/"
 
-async function createGratitudeEntries(entry: Entry) {
-  const { data: newGratitudeEntries } = await axios.post(API_URL, {
-    entry,
-  })
+async function createGratitudeEntry(entry: Entry) {
+  const { data: newGratitudeEntries } = await axios.post(API_URL, entry)
   return newGratitudeEntries
 }
 
-async function deleteGratitudeEntries(id: ID) {
+async function deleteGratitudeEntry(id: ID) {
   const message = await axios.delete(`${API_URL}${id}`)
   return message
 }
@@ -19,12 +17,12 @@ async function getAllGratitudeEntries() {
   return gratitudeEntries
 }
 
-async function updateGratitudeEntries(id: ID, payload: Entry) {
+async function updateGratitudeEntry(id: ID, payload: Entry) {
   const { data: newGratitudeEntries } = await axios.put(`${API_URL}${id}`, payload)
   return newGratitudeEntries
 }
 
-export default { createGratitudeEntries, deleteGratitudeEntries, updateGratitudeEntries, getAllGratitudeEntries }
+export default { createGratitudeEntry, deleteGratitudeEntry, updateGratitudeEntry, getAllGratitudeEntries }
 
 interface Entry {
   favorited?: boolean,
