@@ -5,7 +5,7 @@ const gratitudeSchema = new mongoose.Schema({
   gratitudeDescription: {
     // field1: gratitudeDescription
     type: String, // gratitudeDescription is a string
-    unique: true, // it has to be unique
+    // unique: true, // it has to be unique
     required: true, // it is required
   },
   favorited: {
