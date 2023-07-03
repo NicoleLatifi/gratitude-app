@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import {useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import APIHelper from './APIHelper';
 
 export default function App() {
