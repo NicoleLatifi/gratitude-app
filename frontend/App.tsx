@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, {useEffect, useState } from 'react';
 import APIHelper from './APIHelper';
 
 export default function App() {
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
+  const [entryText, setEntryText] = useState('')
 
   useEffect(() => {
     const fetchAndSetGratitudeEntries = async () => {
@@ -14,14 +15,43 @@ export default function App() {
     fetchAndSetGratitudeEntries()
   }, [])
 
+  const createEntry = async (event: GestureResponderEvent) => {
+    // event.preventDefault()
+    
+    if(!entryText) {
+      alert('Please enter something')
+      return
+    }
+
+    const newEntry = await APIHelper.createGratitudeEntry({gratitudeDescription: entryText})
+    setGratitudeEntries([...gratitudeEntries, newEntry])
+  
+    setEntryText('')
+  }
+
+  const deleteEntry = async (event: GestureResponderEvent, id: string) => {
+    // event.stopPropagation()
+    try {
+      await APIHelper.deleteGratitudeEntry(id)
+      setGratitudeEntries(gratitudeEntries.filter(entry => entry._id !== id))
+    } catch (err) {
+
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.inputAndButtonContainer}>
-        <TextInput placeholder="What are you thankful for today?" style={styles.input}></TextInput>
-        <Button title="Add" />
+        <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
+        <Button onPress={createEntry} title="Add" />
       </View>
       {gratitudeEntries.map((entry) => {
-        return <Text key={entry._id} style={styles.entryText}>- {entry.gratitudeDescription}</Text>
+        return (
+          <View style={styles.entryTextAndButtonContainer}>
+            <Text key={entry._id}>- {entry.gratitudeDescription}</Text>
+            <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
+          </View>
+        )
       })}
       <StatusBar style="auto" />
     </View>
@@ -36,8 +66,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 32,
   },
-  entryText: {
-    paddingTop: 8,
+  deleteButton: {
+    paddingHorizontal: 8,
+  },
+  deleteButtonText: {
+    color: 'blue'
+  },
+  entryTextAndButtonContainer: {
+    flexDirection: 'row',
+    marginTop: 8
   },
   input: {
     borderColor: 'gray',
@@ -49,7 +86,7 @@ const styles = StyleSheet.create({
   },
   inputAndButtonContainer: {
     flexDirection: 'row'
-  }
+  },
 });
 
 interface GratitudeEntryResponse {
