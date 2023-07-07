@@ -1,6 +1,5 @@
 import axios from "axios"
-
-const API_URL = "http://localhost:3000/gratitudeEntries/"
+import { API_URL } from '@env';
 
 async function createGratitudeEntry(entry: Entry) {
   const { data: newGratitudeEntries } = await axios.post(API_URL, entry)

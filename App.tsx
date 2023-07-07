@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, {useEffect, useState } from 'react';
-import APIHelper from './APIHelper';
+import APIHelper from './src/APIHelper';
 
 export default function App() {
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
@@ -47,8 +47,8 @@ export default function App() {
       </View>
       {gratitudeEntries.map((entry) => {
         return (
-          <View style={styles.entryTextAndButtonContainer}>
-            <Text key={entry._id}>- {entry.gratitudeDescription}</Text>
+          <View key={entry._id} style={styles.entryTextAndButtonContainer}>
+            <Text>- {entry.gratitudeDescription}</Text>
             <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
           </View>
         )
