@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, {useEffect, useState } from 'react';
 import APIHelper from './src/APIHelper';
+import SignUpScreen from './src/screens/SignUpScreen';
+import SignInScreen from './src/screens/SignInScreen';
 
 export default function App() {
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
@@ -40,7 +42,9 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <SignUpScreen />
+      <SignInScreen />
       <View style={styles.inputAndButtonContainer}>
         <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
         <Button onPress={createEntry} title="Add" />
@@ -54,16 +58,15 @@ export default function App() {
         )
       })}
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     backgroundColor: '#fff',
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     padding: 32,
   },
   deleteButton: {
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
   },
   entryTextAndButtonContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 8
   },
   input: {
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     height: 40,
-    padding: 8,
+    paddingHorizontal: 8,
   },
   inputAndButtonContainer: {
     flexDirection: 'row'
