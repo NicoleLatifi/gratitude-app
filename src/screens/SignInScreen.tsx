@@ -1,15 +1,32 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { useApp } from '@realm/react';
 
 const SignUpScreen = () => {
+  const app = useApp();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     // Handle sign up logic here
     // You can validate the inputs, make an API request, etc.
     console.log('Email:', email);
     console.log('Password:', password);
+
+    const credentials = Realm.Credentials.emailPassword(
+      email,
+      password
+    );
+    const user = await app.logIn(credentials)
+      .then(user => {
+        // User login successful
+        console.log('Logged in user:', user);
+      })
+      .catch(error => {
+        // Error occurred during login
+        console.error('Error logging in:', error);
+      });
   };
 
   return (

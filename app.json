@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nlatifi.gratitude-frontend"
     },
     "android": {
       "adaptiveIcon": {

@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { useApp } from '@realm/react';
 
 const SignUpScreen = () => {
+  const app = useApp();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignUp = () => {
-    // Handle sign up logic here
-    // You can validate the inputs, make an API request, etc.
+  const handleSignUp = async () => {
+    // TODO: handle email and password validation
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
+
+    await app.emailPasswordAuth.registerUser({
+      email: email,
+      password: password,
+    });
   };
 
   return (

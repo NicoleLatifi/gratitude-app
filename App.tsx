@@ -4,6 +4,8 @@ import React, {useEffect, useState } from 'react';
 import APIHelper from './src/APIHelper';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
+import { UserProvider, AppProvider } from '@realm/react';
+import { APP_ID } from '@env';
 
 export default function App() {
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
@@ -42,23 +44,27 @@ export default function App() {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <SignUpScreen />
-      <SignInScreen />
-      <View style={styles.inputAndButtonContainer}>
-        <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
-        <Button onPress={createEntry} title="Add" />
-      </View>
-      {gratitudeEntries.map((entry) => {
-        return (
-          <View key={entry._id} style={styles.entryTextAndButtonContainer}>
-            <Text>- {entry.gratitudeDescription}</Text>
-            <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
+    <AppProvider id={APP_ID}>
+      <UserProvider fallback={<SignUpScreen />} >
+        <ScrollView style={styles.container}>
+          <SignUpScreen />
+          <SignInScreen />
+          <View style={styles.inputAndButtonContainer}>
+            <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
+            <Button onPress={createEntry} title="Add" />
           </View>
-        )
-      })}
-      <StatusBar style="auto" />
-    </ScrollView>
+          {gratitudeEntries.map((entry) => {
+            return (
+              <View key={entry._id} style={styles.entryTextAndButtonContainer}>
+                <Text>- {entry.gratitudeDescription}</Text>
+                <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
+              </View>
+            )
+          })}
+          <StatusBar style="auto" />
+        </ScrollView>
+      </UserProvider>
+    </AppProvider>
   );
 }
 
