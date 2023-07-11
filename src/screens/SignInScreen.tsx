@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
 import { useApp } from '@realm/react';
+import { useNavigation } from '@react-navigation/native';
 
-const SignUpScreen = () => {
+const SignInScreen = () => {
   const app = useApp();
+  const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +31,10 @@ const SignUpScreen = () => {
       });
   };
 
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp')
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -45,7 +51,8 @@ const SignUpScreen = () => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <Button title="Sign In" onPress={handleSignUp} />
+      <Button onPress={handleSignUp} title="Sign In" />
+      <Button onPress={navigateToSignUp} title="Create an account" />
     </View>
   );
 };
@@ -64,7 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 8,
     width: '100%',
-  },
+  }
 });
 
-export default SignUpScreen;
+export default SignInScreen;
