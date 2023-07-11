@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { useApp } from '@realm/react';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = () => {
+  const app = useApp();
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignUp = () => {
-    // Handle sign up logic here
-    // You can validate the inputs, make an API request, etc.
+  const handleSignUp = async () => {
+    // TODO: handle email and password validation
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
+
+    await app.emailPasswordAuth.registerUser({
+      email: email,
+      password: password,
+    });
   };
+
+    const navigateToSignIn = () => {
+    navigation.navigate('SignIn')
+  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +51,8 @@ const SignUpScreen = () => {
         value={confirmPassword}
         onChangeText={text => setConfirmPassword(text)}
       />
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <Button onPress={handleSignUp} title="Sign Up" />
+      <Button onPress={navigateToSignIn} title="Log in with existing account" />
     </View>
   );
 };
