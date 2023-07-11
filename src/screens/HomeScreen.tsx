@@ -67,7 +67,6 @@ const HomeScreen = () => {
           </View>
         )
       })}
-      {/* <Button onPress={handleLogout} style={{alignSelf: "flex-end"}} title="Logout" /> */}
     </ScrollView>
   )
 }
@@ -97,7 +96,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end"
   },
   logoutButtonText: {
-    color: "blue",
+    color: "#007AFF",
+    fontSize: 18,
   },
   input: {
     borderColor: 'gray',
