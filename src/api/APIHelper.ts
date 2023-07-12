@@ -11,8 +11,8 @@ async function deleteGratitudeEntry(id: ID) {
   return message
 }
 
-async function getAllGratitudeEntries() {
-  const { data: gratitudeEntries } = await axios.get(API_URL)
+async function getAllGratitudeEntries(userID: string) {
+  const { data: gratitudeEntries } = await axios.get(`${API_URL}${userID}`)
   return gratitudeEntries
 }
 
@@ -26,6 +26,7 @@ export default { createGratitudeEntry, deleteGratitudeEntry, updateGratitudeEntr
 interface Entry {
   favorited?: boolean,
   gratitudeDescription: string,
+  userID: string,
 }
 
 type ID = string

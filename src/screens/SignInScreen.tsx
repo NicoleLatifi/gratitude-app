@@ -1,34 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
-import { useApp } from '@realm/react';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../context/userContext';
 
 const SignInScreen = () => {
-  const app = useApp();
   const navigation = useNavigation();
+  const { login } = useUserContext();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = async () => {
-    // Handle sign up logic here
-    // You can validate the inputs, make an API request, etc.
-    console.log('Email:', email);
-    console.log('Password:', password);
-
-    const credentials = Realm.Credentials.emailPassword(
-      email,
-      password
-    );
-    const user = await app.logIn(credentials)
-      .then(user => {
-        // User login successful
-        console.log('Logged in user:', user);
-      })
-      .catch(error => {
-        // Error occurred during login
-        console.error('Error logging in:', error);
-      });
+  const handleSignIn = async () => {
+    login(email, password);
   };
 
   const navigateToSignUp = () => {
@@ -51,7 +34,7 @@ const SignInScreen = () => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <Button onPress={handleSignUp} title="Sign In" />
+      <Button onPress={handleSignIn} title="Sign In" />
       <Button onPress={navigateToSignUp} title="Create an account" />
     </View>
   );

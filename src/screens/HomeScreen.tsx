@@ -2,31 +2,48 @@ import React, { useEffect, useState } from 'react';
 import { Button, GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import LoginStack from '../stacks/LoginStack';
 import { useApp } from '@realm/react';
-import APIHelper from '../APIHelper';
+import APIHelper from '../api/APIHelper';
+import { useUserContext } from '../context/userContext';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const app = useApp();
+  const { user } = useUserContext();
+  const navigation = useNavigation();
+
+  if (!user) {
+    navigation.navigate('SignIn')
+  }
 
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
   const [entryText, setEntryText] = useState('')
 
   useEffect(() => {
+    if (!user || !user.id) {
+      return
+    }
+
     const fetchAndSetGratitudeEntries = async () => {
-      const entries = await APIHelper.getAllGratitudeEntries()
+      const entries = await APIHelper.getAllGratitudeEntries(user.id)
       setGratitudeEntries(entries)
     }
     fetchAndSetGratitudeEntries()
-  }, [])
+  }, [user])
 
   const createEntry = async (event: GestureResponderEvent) => {
     // event.preventDefault()
+
+    if(!user || !user.id) {
+      alert('Something went wrong.')
+      return
+    }
     
     if(!entryText) {
       alert('Please enter something')
       return
     }
 
-    const newEntry = await APIHelper.createGratitudeEntry({gratitudeDescription: entryText})
+    const newEntry = await APIHelper.createGratitudeEntry({gratitudeDescription: entryText, userID: user.id})
     setGratitudeEntries([...gratitudeEntries, newEntry])
   
     setEntryText('')
@@ -46,9 +63,6 @@ const HomeScreen = () => {
     await app.currentUser?.logOut();
   }
 
-
-
-
   return (
     <ScrollView style={styles.container}>
       <LoginStack />
@@ -59,7 +73,7 @@ const HomeScreen = () => {
         <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
         <Button onPress={createEntry} title="Add" />
       </View>
-      {gratitudeEntries.map((entry) => {
+      {gratitudeEntries && gratitudeEntries.map((entry) => {
         return (
           <View key={entry._id} style={styles.entryTextAndButtonContainer}>
             <Text>- {entry.gratitudeDescription}</Text>
@@ -117,4 +131,5 @@ interface GratitudeEntryResponse {
   _id: string,
   favorited: boolean,
   gratitudeDescription: string,
+  userID: string,
 }
