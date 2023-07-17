@@ -3,23 +3,21 @@
     "version": ">= 3.15.1"
   },
   "build": {
-    "development": {
-      "distribution": "internal",
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      },
-      "ios": {
-        "buildConfiguration": "Debug"
-      }
-    },
-    "preview": {
-      "distribution": "internal"
-    },
     "production": {
       "env": {
         "API_URL": "https://little-gratitudes-app-e89f4354ddaa.herokuapp.com/gratitudeEntries/",
         "APP_ID": "little-gratitudes-kfkme"
-      }
+      },
+      "node": "14.19.0"
+    },
+    "development": {
+      "extends": "production",
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "extends": "production",
+      "distribution": "internal"
     }
   },
   "submit": {
