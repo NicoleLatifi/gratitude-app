@@ -4,9 +4,6 @@
   },
   "build": {
     "production": {
-      "android": {
-        "buildType": "app-bundle, apk"
-      },
       "env": {
         "API_URL": "https://little-gratitudes-app-e89f4354ddaa.herokuapp.com/gratitudeEntries/",
         "APP_ID": "little-gratitudes-kfkme"
