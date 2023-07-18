@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-import { login } from "../api/authenticationService";
+// import { login } from "../api/authenticationService";
+import { useApp } from "@realm/react";
+import Realm from 'realm';
 
 interface UserContextValue {
   login: (email: string, password: string) => Promise<void>;
@@ -17,19 +19,32 @@ export const UserContext = createContext<UserContextValue>({
 export const UserProvider = ({ children }: {
     children: JSX.Element | JSX.Element[];
 }) => {
+  const app = useApp();
+
   const [user, setUser] = useState({
     email: '',
     id: '',
   });
 
   const handleLogin = async (email: string, password: string) => {
+    // try {
+    //   const userData = await login(email, password);
+    //   if (userData) {
+    //     setUser(userData);
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
+
     try {
-      const userData = await login(email, password);
-      if (userData) {
-        setUser(userData);
-      }
+      const credentials = Realm.Credentials.emailPassword("Nicole.Latifi@gmail.com", "password123");
+
+      const user = await app.logIn(credentials);
+
+      setUser({ email: email, id: user.id });
     } catch (error) {
-      console.log(error)
+      console.error('Error logging in:', error);
+      throw error;
     }
   }
 
