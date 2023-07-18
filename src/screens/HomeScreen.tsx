@@ -5,18 +5,21 @@ import { useApp } from '@realm/react';
 import APIHelper from '../api/APIHelper';
 import { useUserContext } from '../context/userContext';
 import { useNavigation } from '@react-navigation/native';
+import DeleteAccountModal from '../components/DeleteAccountModal';
 
 const HomeScreen = () => {
   const app = useApp();
   const { user } = useUserContext();
   const navigation = useNavigation();
-
+  
   if (!user) {
     navigation.navigate('SignIn')
   }
-
+  
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
   const [entryText, setEntryText] = useState('')
+  
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (!user || !user.id) {
@@ -66,6 +69,10 @@ const HomeScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <LoginStack />
+      <DeleteAccountModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <Pressable style={styles.logoutButtonContainer} onPress={() => setModalVisible(true)}>
+        <Text style={styles.logoutButtonText} >Delete My Account</Text>
+      </Pressable>
       <Pressable style={styles.logoutButtonContainer} onPress={handleLogout}>
         <Text style={styles.logoutButtonText} >Logout</Text>
       </Pressable>
