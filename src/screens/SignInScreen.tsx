@@ -34,17 +34,24 @@ const SignInScreen = () => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <Button onPress={handleSignIn} title="Sign In" />
-      <Button onPress={navigateToSignUp} title="Create an account" />
+      <View style={styles.buttonsContainer} >
+        <Button onPress={handleSignIn} title="Sign In" />
+        <Button onPress={navigateToSignUp} title="Create an account" />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  buttonsContainer: {
+    height: 80,
+    justifyContent: "space-between"
+  },
   container: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    padding: 32,
   },
   input: {
     borderColor: 'gray',
