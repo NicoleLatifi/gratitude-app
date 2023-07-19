@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useUserContext } from '../context/userContext';
+import { useApp } from '@realm/react';
 
 const SignInScreen = () => {
+  const app = useApp();
   const navigation = useNavigation();
-  const { login } = useUserContext();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = async () => {
-    login(email, password);
+    const credentials = Realm.Credentials.emailPassword(email, password);
+
+    await app.logIn(credentials);
+    navigation.navigate('HomeScreen')
   };
 
   const navigateToSignUp = () => {

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import LoginStack from '../stacks/LoginStack';
-import { useApp } from '@realm/react';
+import { useApp, useUser } from '@realm/react';
 import APIHelper from '../api/APIHelper';
-import { useUserContext } from '../context/userContext';
+// import { useUserContext } from '../context/userContext';
 import { useNavigation } from '@react-navigation/native';
 import DeleteAccountModal from '../components/DeleteAccountModal';
 
 const HomeScreen = () => {
   const app = useApp();
-  const { user } = useUserContext();
+  const user = useUser();
+  // const { user } = useUserContext();
   const navigation = useNavigation();
-  
+
   if (!user) {
     navigation.navigate('SignIn')
   }
@@ -64,11 +65,12 @@ const HomeScreen = () => {
 
   const handleLogout = async () => {
     await app.currentUser?.logOut();
+    navigation.navigate('LoginStack')
   }
 
   return (
     <ScrollView style={styles.container}>
-      <LoginStack />
+      {/* <LoginStack /> */}
       <DeleteAccountModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <Pressable style={styles.logoutButtonContainer} onPress={() => setModalVisible(true)}>
         <Text style={styles.logoutButtonText} >Delete My Account</Text>

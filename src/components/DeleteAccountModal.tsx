@@ -1,14 +1,17 @@
 import React from 'react';
 import {Button, Modal, StyleSheet, Text, View} from 'react-native';
 import {useApp, useUser} from '@realm/react';
+import { useNavigation } from '@react-navigation/native';
 
 const DeleteAccountModal = ({modalVisible, setModalVisible}: {modalVisible: boolean, setModalVisible: (modalVisible: boolean) => void}) => {
   const app = useApp();
   const user = useUser();
+  const navigation = useNavigation();
 
   const deleteUser = async () => {
-    console.log('user: ', user)
-    // await app.deleteUser(user);
+    await app.deleteUser(user);
+    setModalVisible(false)
+    navigation.navigate('LoginStack');
   };
 
   return (

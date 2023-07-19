@@ -1,58 +1,62 @@
-import React, { createContext, useContext, useState } from "react";
-// import { login } from "../api/authenticationService";
-import { useApp } from "@realm/react";
-import Realm from 'realm';
+// import React, { createContext, useContext, useState } from "react";
+// // import { login } from "../api/authenticationService";
+// import { useApp } from "@realm/react";
+// import Realm from 'realm';
 
-interface UserContextValue {
-  login: (email: string, password: string) => Promise<void>;
-  user: {
-    email: string,
-    id: string
-  } | null;
-}
+// interface User {
+//   email: string,
+//   id: string
+// }
 
-export const UserContext = createContext<UserContextValue>({
-  login: async() => {},
-  user: null,
-});
+// interface UserContextValue {
+//   login: (email: string, password: string) => Promise<void>;
+//   setUser: (user: User | null) => void;
+//   user: User | null
+// }
 
-export const UserProvider = ({ children }: {
-    children: JSX.Element | JSX.Element[];
-}) => {
-  const app = useApp();
+// export const UserContext = createContext<UserContextValue>({
+//   login: async() => {},
+//   setUser: () => null,
+//   user: null,
+// });
 
-  const [user, setUser] = useState({
-    email: '',
-    id: '',
-  });
+// export const UserProvider = ({ children }: {
+//     children: JSX.Element | JSX.Element[];
+// }) => {
+//   const app = useApp();
 
-  const handleLogin = async (email: string, password: string) => {
-    // try {
-    //   const userData = await login(email, password);
-    //   if (userData) {
-    //     setUser(userData);
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    // }
+//   const [user, setUser] = useState<User | null>({
+//     email: '',
+//     id: '',
+//   });
 
-    try {
-      const credentials = Realm.Credentials.emailPassword("Nicole.Latifi@gmail.com", "password123");
+//   const handleLogin = async (email: string, password: string) => {
+//     // try {
+//     //   const userData = await login(email, password);
+//     //   if (userData) {
+//     //     setUser(userData);
+//     //   }
+//     // } catch (error) {
+//     //   console.log(error)
+//     // }
 
-      const user = await app.logIn(credentials);
+//     try {
+//       const credentials = Realm.Credentials.emailPassword(email, password);
 
-      setUser({ email: email, id: user.id });
-    } catch (error) {
-      console.error('Error logging in:', error);
-      throw error;
-    }
-  }
+//       const user = await app.logIn(credentials);
 
-  const value = { user, login: handleLogin };
+//       setUser({ email: email, id: user.id });
+//     } catch (error) {
+//       console.error('Error logging in:', error);
+//       throw error;
+//     }
+//   }
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-};
+//   const value = { login: handleLogin, setUser, user };
 
-export function useUserContext() {
-    return useContext(UserContext);
-}
+//   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+// };
+
+// export function useUserContext() {
+//     return useContext(UserContext);
+// }
