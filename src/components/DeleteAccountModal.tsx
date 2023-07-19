@@ -1,7 +1,16 @@
 import React from 'react';
-import { Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Button, Modal, StyleSheet, Text, View} from 'react-native';
+import {useApp, useUser} from '@realm/react';
 
 const DeleteAccountModal = ({modalVisible, setModalVisible}: {modalVisible: boolean, setModalVisible: (modalVisible: boolean) => void}) => {
+  const app = useApp();
+  const user = useUser();
+
+  const deleteUser = async () => {
+    console.log('user: ', user)
+    // await app.deleteUser(user);
+  };
+
   return (
     <>
       <Modal
@@ -14,14 +23,9 @@ const DeleteAccountModal = ({modalVisible, setModalVisible}: {modalVisible: bool
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Pressable>
-              <Text>Yes, delete my account</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text>Hide Modal</Text>
-            </Pressable>
+            <Text style={styles.modalBodyText}>Are you sure you want to delete your account? This cannot be undone.</Text>
+            <Button onPress={deleteUser} title="Yes, delete my account" />
+            <Button onPress={() => setModalVisible(!modalVisible)} title="Cancel" />
           </View>
         </View>
       </Modal>
@@ -34,6 +38,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  modalBodyText: {
+    fontSize: 20
   },
   modalView: {
     alignItems: 'center',
