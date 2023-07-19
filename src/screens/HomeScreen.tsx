@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import LoginStack from '../stacks/LoginStack';
 import { useApp, useUser } from '@realm/react';
 import APIHelper from '../api/APIHelper';
-// import { useUserContext } from '../context/userContext';
 import { useNavigation } from '@react-navigation/native';
 import DeleteAccountModal from '../components/DeleteAccountModal';
 
 const HomeScreen = () => {
   const app = useApp();
   const user = useUser();
-  // const { user } = useUserContext();
   const navigation = useNavigation();
 
   if (!user) {
@@ -70,7 +67,6 @@ const HomeScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <LoginStack /> */}
       <DeleteAccountModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <Pressable style={styles.logoutButtonContainer} onPress={() => setModalVisible(true)}>
         <Text style={styles.logoutButtonText} >Delete My Account</Text>
