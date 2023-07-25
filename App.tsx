@@ -11,8 +11,8 @@ export default function App() {
     <AppProvider id={APP_ID}>
         <NavigationContainer>
           <RealmUserProvider fallback={<LoginStack />} >
-              <AppStack />
               <StatusBar style="auto" />
+              <AppStack />
           </RealmUserProvider>
         </NavigationContainer>
     </AppProvider>

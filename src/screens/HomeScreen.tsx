@@ -1,92 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { Button, GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useApp, useUser } from '@realm/react';
-import APIHelper from '../api/APIHelper';
+import React, { useRef, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+import { useUser } from '@realm/react';
 import { useNavigation } from '@react-navigation/native';
-import DeleteAccountModal from '../components/DeleteAccountModal';
+import Circle from '../components/Circle';
+import { colors } from '../constants'
+import GratitudesFormAndList from '../components/GratitudesFormAndList';
+import Menu from '../components/Menu';
+
+const DURATION = 1000;
+// const TEXT_DURATION = DURATION * 0.8;
 
 const HomeScreen = () => {
-  const app = useApp();
   const user = useUser();
   const navigation = useNavigation();
 
   if (!user) {
     navigation.navigate('SignIn')
   }
+
+  // Animations
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const animatedValue2 = useRef(new Animated.Value(0)).current;
+  // const sliderAnimatedValue = useRef(new Animated.Value(-300)).current;
   
-  const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntryResponse[]>([])
-  const [entryText, setEntryText] = useState('')
-  
-  const [modalVisible, setModalVisible] = useState(false);
+  const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    if (!user || !user.id) {
-      return
-    }
+  const animate = (i: number) =>
+    Animated.parallel([
+      // Animated.timing(sliderAnimatedValue, {
+      //   toValue: 0,
+      //   duration: TEXT_DURATION,
+      //   useNativeDriver: true,
+      // }),
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: DURATION,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animatedValue2, {
+        toValue: 1,
+        duration: DURATION,
+        useNativeDriver: false,
+      }),
+    ]);
 
-    const fetchAndSetGratitudeEntries = async () => {
-      const entries = await APIHelper.getAllGratitudeEntries(user.id)
-      setGratitudeEntries(entries)
-    }
-    fetchAndSetGratitudeEntries()
-  }, [user])
-
-  const createEntry = async (event: GestureResponderEvent) => {
-    // event.preventDefault()
-
-    if(!user || !user.id) {
-      alert('Something went wrong.')
-      return
-    }
-    
-    if(!entryText) {
-      alert('Please enter something')
-      return
-    }
-
-    const newEntry = await APIHelper.createGratitudeEntry({gratitudeDescription: entryText, userID: user.id})
-    setGratitudeEntries([...gratitudeEntries, newEntry])
-  
-    setEntryText('')
-  }
-
-  const deleteEntry = async (event: GestureResponderEvent, id: string) => {
-    // event.stopPropagation()
-    try {
-      await APIHelper.deleteGratitudeEntry(id)
-      setGratitudeEntries(gratitudeEntries.filter(entry => entry._id !== id))
-    } catch (err) {
-
-    }
-  }
-
-  const handleLogout = async () => {
-    await app.currentUser?.logOut();
-    navigation.navigate('LoginStack')
-  }
+  const onPress = () => {
+    animatedValue.setValue(0);
+    animatedValue2.setValue(0);
+    animate((index + 1) % colors.length).start();
+    setIndex((index + 1) % colors.length);
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <DeleteAccountModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      <Pressable style={styles.logoutButtonContainer} onPress={() => setModalVisible(true)}>
-        <Text style={styles.logoutButtonText} >Delete My Account</Text>
-      </Pressable>
-      <Pressable style={styles.logoutButtonContainer} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText} >Logout</Text>
-      </Pressable>
-      <View style={styles.inputAndButtonContainer}>
-        <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
-        <Button onPress={createEntry} title="Add" />
-      </View>
-      {gratitudeEntries && gratitudeEntries.map((entry) => {
-        return (
-          <View key={entry._id} style={styles.entryTextAndButtonContainer}>
-            <Text>- {entry.gratitudeDescription}</Text>
-            <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
-          </View>
-        )
-      })}
-    </ScrollView>
+    <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 100 }}>
+      <Circle animatedValue={animatedValue} animatedValue2={animatedValue2} index={index} onPress={onPress} />
+      {index === 0 && <GratitudesFormAndList />}
+      {index === 1 &&  <Menu />}
+    </View>
   )
 }
 
@@ -98,7 +68,9 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     padding: 32,
-    paddingTop: 128
+    paddingTop: 128,
+    borderWidth: 2,
+    borderColor: "#00ff00"
   },
   deleteButton: {
     paddingHorizontal: 8,
