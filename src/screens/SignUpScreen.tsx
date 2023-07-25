@@ -13,9 +13,6 @@ const SignUpScreen = () => {
 
   const handleSignUp = async () => {
     // TODO: handle email and password validation
-    // console.log('Email:', email);
-    // console.log('Password:', password);
-    // console.log('Confirm Password:', confirmPassword);
 
     await app.emailPasswordAuth.registerUser({
       email: email,
