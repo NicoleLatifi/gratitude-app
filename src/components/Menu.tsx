@@ -57,7 +57,3 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   }
 });
-
-
-
-// Move the slide animation to the HomeScreen. That will help with having it slide away to the left as well.

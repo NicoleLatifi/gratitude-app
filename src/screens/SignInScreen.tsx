@@ -7,8 +7,8 @@ const SignInScreen = () => {
   const app = useApp();
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState('Nicole.Latifi@gmail.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSignIn = async () => {
     const credentials = Realm.Credentials.emailPassword(email, password);
