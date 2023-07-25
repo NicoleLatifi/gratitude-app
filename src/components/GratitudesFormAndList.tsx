@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Button, GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {  Button, GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import APIHelper from '../api/APIHelper';
 import { useUser } from '@realm/react';
+import Animated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated'
 
 const GratitudesFormAndList = () => {
   const user = useUser();
@@ -20,25 +21,6 @@ const GratitudesFormAndList = () => {
     }
     fetchAndSetGratitudeEntries()
   }, [user])
-
-  const slideAnim = useRef(new Animated.Value(500)).current;
-
-  useEffect(() => {
-    const delay = 200;
-
-    const startAnimation = () => {
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    const timerId = setTimeout(startAnimation, delay);
-
-    // Clean up the timer to avoid memory leaks
-    return () => clearTimeout(timerId);
-  }, []);
 
   const createEntry = async (event: GestureResponderEvent) => {
     // event.preventDefault()
@@ -69,9 +51,12 @@ const GratitudesFormAndList = () => {
     }
   }
 
-
   return (
-    <Animated.View style={[styles.container, { transform: [{ translateX: slideAnim }] }]} >
+    <Animated.View 
+      entering={SlideInRight.delay(400).duration(800)} 
+      exiting={SlideOutLeft} 
+      style={styles.container} 
+    >
       <View style={styles.inputAndButtonContainer}>
         <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
         <Button onPress={createEntry} title="Add" />

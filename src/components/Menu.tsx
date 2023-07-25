@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useApp, useUser } from '@realm/react';
-import { Animated, Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import DeleteAccountModal from './DeleteAccountModal';
+import Animated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
 
 const Menu = () => {
   const app = useApp();
@@ -16,27 +17,12 @@ const Menu = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const slideAnim = useRef(new Animated.Value(500)).current;
-
-  useEffect(() => {
-    const delay = 200; // 1000 milliseconds (1 second)
-
-    const startAnimation = () => {
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true, // Enable this for better performance on supported platforms
-      }).start();
-    };
-
-    const timerId = setTimeout(startAnimation, delay);
-
-    // Clean up the timer to avoid memory leaks
-    return () => clearTimeout(timerId);
-  }, []);
-
   return (
-    <Animated.View style={[styles.container, { transform: [{ translateX: slideAnim }] }]} >
+    <Animated.View 
+      entering={SlideInRight.delay(400).duration(800)} 
+      exiting={SlideOutLeft} 
+      style={styles.container} 
+    >
       <DeleteAccountModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <Pressable style={styles.logoutButtonContainer} onPress={handleLogout}>
         <Text style={styles.logoutButtonText} >Logout</Text>

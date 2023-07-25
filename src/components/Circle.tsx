@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../constants';
 
 interface CircleProps {
@@ -106,7 +106,7 @@ const { initialBgColor, nextBgColor, bgColor } = colors[index];
               },
             ]}
           >
-            <Ionicons name="settings" size={24} color="black" />
+            <AntDesign name="menuunfold" size={24} color="black" />
           </Animated.View>
         </TouchableOpacity>
       </Animated.View>
@@ -121,18 +121,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    // paddingTop: Constants.statusBarHeight,
     padding: 8,
     paddingBottom: 50,
   },
-  // paragraph: {
-  //   margin: 12,
-  //   fontSize: 24,
-  //   // fontWeight: 'bold',
-  //   textAlign: 'center',
-  //   fontFamily: 'Menlo',
-  //   color: 'white',
-  // },
   button: {
     height: 100,
     width: 100,
