@@ -12,7 +12,7 @@ const Menu = () => {
 
   const handleLogout = async () => {
     await app.currentUser?.logOut();
-    navigation.navigate('LoginStack')
+    // navigation.navigate('LoginStack')
   }
 
   const [modalVisible, setModalVisible] = useState(false);

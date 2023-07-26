@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, View } from 'react-native';
 import { useUser } from '@realm/react';
 import { useNavigation } from '@react-navigation/native';
 import Circle from '../components/Circle';
@@ -52,7 +52,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 100 }}>
+    <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 40 }}>
       <Circle animatedValue={animatedValue} animatedValue2={animatedValue2} index={index} onPress={onPress} />
       {index === 0 && <GratitudesFormAndList />}
       {index === 1 &&  <Menu />}
@@ -61,52 +61,3 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    flex: 1,
-    // justifyContent: 'center',
-    padding: 32,
-    paddingTop: 128,
-    borderWidth: 2,
-    borderColor: "#00ff00"
-  },
-  deleteButton: {
-    paddingHorizontal: 8,
-  },
-  deleteButtonText: {
-    color: 'blue'
-  },
-  entryTextAndButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 8
-  },
-  logoutButtonContainer: {
-    alignSelf: "flex-end"
-  },
-  logoutButtonText: {
-    color: "#007AFF",
-    fontSize: 18,
-  },
-  input: {
-    borderColor: 'gray',
-    borderRadius: 8,
-    borderWidth: 1,
-    flex: 1,
-    height: 40,
-    paddingHorizontal: 8,
-  },
-  inputAndButtonContainer: {
-    flexDirection: 'row',
-    paddingTop: 64
-  },
-});
-
-interface GratitudeEntryResponse {
-  _id: string,
-  favorited: boolean,
-  gratitudeDescription: string,
-  userID: string,
-}
