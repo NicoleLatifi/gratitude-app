@@ -4,6 +4,7 @@ import APIHelper from '../api/APIHelper';
 import { useUser } from '@realm/react';
 import Animated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated'
 import { AntDesign } from '@expo/vector-icons';
+import GratitudeItem from './GratitudeItem';
 
 const GratitudesFormAndList = () => {
   const user = useUser();
@@ -63,12 +64,10 @@ const GratitudesFormAndList = () => {
           maxLength={25} 
           onChangeText={newText=> setEntryText(newText)} 
           placeholder="What are you thankful for today?" 
-          // placeholderTextColor="#3a506b"
           placeholderTextColor="#22223b"
           style={styles.input} 
           value={entryText} 
         />
-        {/* <Button onPress={createEntry} title="Add" /> */}
         <Pressable onPress={createEntry} style={{ justifyContent: 'center', padding: 8}} >
           <AntDesign color= "#eaf4f4" name="pluscircleo" size={30} />
         </Pressable>
@@ -76,17 +75,22 @@ const GratitudesFormAndList = () => {
       <ScrollView>
         {gratitudeEntries && gratitudeEntries.map((entry) => {
           return (
-            <View key={entry._id} style={styles.entryTextAndButtonContainer}>
-              <Text 
-                adjustsFontSizeToFit={true}
-                minimumFontScale={0.5} 
-                numberOfLines={1}
-                style={styles.text}
-              >
-                {entry.gratitudeDescription}
-              </Text>
-              <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
-            </View>
+            // <View key={entry._id} style={styles.entryTextAndButtonContainer}>
+            //   <Text 
+            //     adjustsFontSizeToFit={true}
+            //     minimumFontScale={0.5} 
+            //     numberOfLines={1}
+            //     style={styles.text}
+            //   >
+            //     {entry.gratitudeDescription}
+            //   </Text>
+            //   <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
+            // </View>
+            <GratitudeItem 
+              key={entry._id}
+              entry={entry} 
+              onPressDelete={(event) => deleteEntry(event, entry._id)}
+            />
           )
         })}
       </ScrollView>
@@ -102,9 +106,8 @@ const styles = StyleSheet.create({
     borderColor: "#22223b",
     borderRadius: 16,
     // borderWidth: 1,
-    height: 400,
-    // padding: 16,
-    margin: 32
+    height: 420,
+    margin: 16
   },
   deleteButton: {
     paddingHorizontal: 8,
@@ -112,21 +115,21 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: 'blue'
   },
-  entryTextAndButtonContainer: {
-    alignItems: "center",
-    // backgroundColor: "#cad2c5",
-    // backgroundColor: "#9ba0bc",
-    backgroundColor: "#bdd4e7",
-    borderColor: "#22223b",
-    borderRadius: 4,
-    borderWidth: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    minHeight: 61,
-    marginTop: 8,
-    marginHorizontal: 16,
-    paddingHorizontal: 16,
-  },
+  // entryTextAndButtonContainer: {
+  //   alignItems: "center",
+  //   // backgroundColor: "#cad2c5",
+  //   // backgroundColor: "#9ba0bc",
+  //   backgroundColor: "#bdd4e7",
+  //   borderColor: "#22223b",
+  //   borderRadius: 4,
+  //   borderWidth: 1,
+  //   flexDirection: 'row',
+  //   justifyContent: 'center',
+  //   minHeight: 61,
+  //   marginTop: 8,
+  //   marginHorizontal: 16,
+  //   paddingHorizontal: 16,
+  // },
   logoutButtonContainer: {
     alignSelf: "flex-end"
   },
@@ -163,13 +166,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
   },
-  text: {
-    color: "#22223b",
-    fontSize: 24,
-  }
+  // text: {
+  //   color: "#22223b",
+  //   fontSize: 24,
+  // }
 });
 
-interface GratitudeEntryResponse {
+export interface GratitudeEntryResponse {
   _id: string,
   favorited: boolean,
   gratitudeDescription: string,
