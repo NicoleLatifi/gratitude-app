@@ -21,6 +21,13 @@ const SignInScreen = () => {
     navigation.navigate('SignUp')
   }
 
+  const handleGuestSignIn = async () => {
+    const credentials = Realm.Credentials.emailPassword("Nicole.Latifi@gmail.com", "password123");
+
+    await app.logIn(credentials);
+    navigation.navigate('HomeScreen')
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -40,6 +47,7 @@ const SignInScreen = () => {
       <View style={styles.buttonsContainer} >
         <Button onPress={handleSignIn} title="Sign In" />
         <Button onPress={navigateToSignUp} title="Create an account" />
+        <Button onPress={handleGuestSignIn} title="Sign In As Guest" />
       </View>
     </View>
   );
@@ -47,7 +55,7 @@ const SignInScreen = () => {
 
 const styles = StyleSheet.create({
   buttonsContainer: {
-    height: 80,
+    height: 120,
     justifyContent: "space-between"
   },
   container: {

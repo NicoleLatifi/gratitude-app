@@ -60,15 +60,18 @@ const GratitudesFormAndList = () => {
       style={styles.container} 
     >
       <View style={styles.inputAndButtonContainer}>
-        <TextInput
-          maxLength={25} 
-          onChangeText={newText=> setEntryText(newText)} 
-          placeholder="What are you thankful for today?" 
-          placeholderTextColor="#22223b"
-          style={styles.input} 
-          value={entryText} 
-        />
-        <Pressable onPress={createEntry} style={{ justifyContent: 'center', padding: 8}} >
+        <View style={styles.inputAndCounterContainer}>
+          <TextInput
+            maxLength={25} 
+            onChangeText={newText=> setEntryText(newText)} 
+            placeholder="What are you thankful for today?" 
+            placeholderTextColor="#22223b"
+            style={styles.input} 
+            value={entryText} 
+          />
+          <Text style={styles.counterText}>{`${entryText.length}`}/25</Text>
+        </View>
+        <Pressable onPress={createEntry} style={{ justifyContent: 'center', padding: 8, paddingBottom: 16}} >
           <AntDesign color= "#eaf4f4" name="pluscircleo" size={30} />
         </Pressable>
       </View>
@@ -107,7 +110,14 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     // borderWidth: 1,
     height: 420,
-    margin: 16
+    margin: 16,
+    paddingBottom: 1,
+  },
+  counterText: {
+    alignSelf: "flex-end",
+    color: "#eaf4f4",
+    fontSize: 10,
+    paddingRight: 2,
   },
   deleteButton: {
     paddingHorizontal: 8,
@@ -115,21 +125,6 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: 'blue'
   },
-  // entryTextAndButtonContainer: {
-  //   alignItems: "center",
-  //   // backgroundColor: "#cad2c5",
-  //   // backgroundColor: "#9ba0bc",
-  //   backgroundColor: "#bdd4e7",
-  //   borderColor: "#22223b",
-  //   borderRadius: 4,
-  //   borderWidth: 1,
-  //   flexDirection: 'row',
-  //   justifyContent: 'center',
-  //   minHeight: 61,
-  //   marginTop: 8,
-  //   marginHorizontal: 16,
-  //   paddingHorizontal: 16,
-  // },
   logoutButtonContainer: {
     alignSelf: "flex-end"
   },
@@ -152,7 +147,6 @@ const styles = StyleSheet.create({
     // borderTopWidth: 0,
     borderWidth: 1,
     color: "#22223b",
-    flex: 1,
     height: 60,
     paddingHorizontal: 8,
   },
@@ -165,11 +159,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     flexDirection: 'row',
     padding: 16,
+    paddingBottom: 8,
   },
-  // text: {
-  //   color: "#22223b",
-  //   fontSize: 24,
-  // }
+  inputAndCounterContainer: {
+    flexDirection: 'column',
+    flex: 1,
+  },
 });
 
 export interface GratitudeEntryResponse {
