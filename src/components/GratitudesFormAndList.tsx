@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {  Button, GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {  Button, GestureResponderEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import APIHelper from '../api/APIHelper';
 import { useUser } from '@realm/react';
 import Animated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated'
+import { AntDesign } from '@expo/vector-icons';
 
 const GratitudesFormAndList = () => {
   const user = useUser();
@@ -58,18 +59,37 @@ const GratitudesFormAndList = () => {
       style={styles.container} 
     >
       <View style={styles.inputAndButtonContainer}>
-        <TextInput onChangeText={newText=> setEntryText(newText)} placeholder="What are you thankful for today?" style={styles.input} value={entryText}></TextInput>
-        <Button onPress={createEntry} title="Add" />
+        <TextInput
+          maxLength={25} 
+          onChangeText={newText=> setEntryText(newText)} 
+          placeholder="What are you thankful for today?" 
+          // placeholderTextColor="#3a506b"
+          placeholderTextColor="#22223b"
+          style={styles.input} 
+          value={entryText} 
+        />
+        {/* <Button onPress={createEntry} title="Add" /> */}
+        <Pressable onPress={createEntry} style={{ justifyContent: 'center', padding: 8}} >
+          <AntDesign color= "#eaf4f4" name="pluscircleo" size={30} />
+        </Pressable>
       </View>
-      {gratitudeEntries && gratitudeEntries.map((entry) => {
-        return (
-          // TODO: make this a ScrollView
-          <View key={entry._id} style={styles.entryTextAndButtonContainer}>
-            <Text>- {entry.gratitudeDescription}</Text>
-            <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
-          </View>
-        )
-      })}
+      <ScrollView>
+        {gratitudeEntries && gratitudeEntries.map((entry) => {
+          return (
+            <View key={entry._id} style={styles.entryTextAndButtonContainer}>
+              <Text 
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.5} 
+                numberOfLines={1}
+                style={styles.text}
+              >
+                {entry.gratitudeDescription}
+              </Text>
+              <Pressable onPress={(event) => deleteEntry(event, entry._id)} style={styles.deleteButton}><Text style={styles.deleteButtonText}>x</Text></Pressable>
+            </View>
+          )
+        })}
+      </ScrollView>
     </Animated.View>
   )
 }
@@ -79,9 +99,11 @@ export default GratitudesFormAndList;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#eaf4f4",
+    borderColor: "#22223b",
     borderRadius: 16,
-    height: 300,
-    padding: 16,
+    // borderWidth: 1,
+    height: 400,
+    // padding: 16,
     margin: 32
   },
   deleteButton: {
@@ -91,9 +113,19 @@ const styles = StyleSheet.create({
     color: 'blue'
   },
   entryTextAndButtonContainer: {
+    alignItems: "center",
+    // backgroundColor: "#cad2c5",
+    // backgroundColor: "#9ba0bc",
+    backgroundColor: "#bdd4e7",
+    borderColor: "#22223b",
+    borderRadius: 4,
+    borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 8
+    minHeight: 61,
+    marginTop: 8,
+    marginHorizontal: 16,
+    paddingHorizontal: 16,
   },
   logoutButtonContainer: {
     alignSelf: "flex-end"
@@ -103,17 +135,38 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   input: {
-    borderColor: 'gray',
+    // backgroundColor: '#7392b7', // like Little Gratitudes color
+    // backgroundColor: "#b8d0eb", // good light purple/blue
+    // backgroundColor: "#037171", // cool green
+    backgroundColor: "#6a8d92", // lighter green
+    // backgroundColor: "#395e66",
+    borderColor: "#22223b",
+    // borderTopLeftRadius: 4,
+    // borderTopRightRadius: 4,
     borderRadius: 8,
+    // borderLeftWidth: 0,
+    // borderRightWidth: 0,
+    // borderTopWidth: 0,
     borderWidth: 1,
+    color: "#22223b",
     flex: 1,
-    height: 40,
+    height: 60,
     paddingHorizontal: 8,
   },
   inputAndButtonContainer: {
+    // backgroundColor: "#22223b",
+    // backgroundColor: "#037171", //cool green
+    backgroundColor: "#395e66",
+    // backgroundColor: "#6a8d92",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     flexDirection: 'row',
-    paddingTop: 64
+    padding: 16,
   },
+  text: {
+    color: "#22223b",
+    fontSize: 24,
+  }
 });
 
 interface GratitudeEntryResponse {
